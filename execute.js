@@ -19,6 +19,9 @@ function getCurrentAllCut() {
     return allRows
 }
 
+
+
+
  const  choose =async () => {
     
     sign = true;
@@ -109,8 +112,46 @@ function getCurrentAllCut() {
 
     }
 };
-const remove = () => {
-    console.log('remove duplicate');
+
+const select_no_nochange_title = async () => {
+    sign = true;
+
+    while (sign) {
+        scrollBottom();
+        //sleep for 1 second
+        await new Promise(r => setTimeout(r, 2000));
+        const clientHeight = scroll_area.clientHeight;
+        const scrolltop = scroll_area.scrollTop;
+        const scrollHeight = scroll_area.scrollHeight;
+        if (clientHeight + scrolltop >= scrollHeight) {
+            console.log('end of page');
+            sign = false;
+        }
+        //天前出現停止
+        let allRows = getCurrentAllCut();
+        for (let i = 0; i < allRows.length; i++) {
+            // console.log(allRows[i].innerText.split('\n')[5].indexOf('天前'));
+            // console.log(allRows[i].innerText.split('\n')[5]);
+            if (allRows[i].innerText.split('\n')[5].indexOf('天前') != -1) {
+                // console.log('loaded one month ago');
+                days = allRows[i].innerText.split('\n')[5].split('天前')[0];
+                // console.log(days);
+                if (parseInt(days) > 7) {
+                    console.log('loaded almost one week ago');
+                    sign = false;
+                }
+            }
+        }
+    }
+    let allRows = getCurrentAllCut();
+    for (let i = 0; i < allRows.length; i++) {
+        //split the text by new line
+        if (allRows[i].innerText.split('\n')[1].indexOf('【外神歪西】') != -1) {
+            allRows[i].querySelector('.tw-checkbox__label').click();
+        }
+        
+    }
+
 }
 
 const onMessage = (message) => {
@@ -118,8 +159,8 @@ const onMessage = (message) => {
         case 'CHOOSE':
             choose();
             break;
-        case 'REMOVE':
-            remove();
+        case 'NOCHANGE':
+            select_no_nochange_title();
             break;
         default:
             break;

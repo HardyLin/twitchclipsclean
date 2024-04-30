@@ -2,7 +2,7 @@ var getSelectedTab = (tab) => {
     var tabId = tab.id;
     var sendMessage = (messageObj) => chrome.tabs.sendMessage(tabId, messageObj);
     document.getElementById('choose').addEventListener('click', () => sendMessage({ action: 'CHOOSE' }));
-    document.getElementById('remove').addEventListener('click', () => sendMessage({ action: 'REMOVE' }))
+    document.getElementById('nochange').addEventListener('click', () => sendMessage({ action: 'NOCHANGE' }))
   }
   chrome.tabs.getSelected(null, getSelectedTab);
 
